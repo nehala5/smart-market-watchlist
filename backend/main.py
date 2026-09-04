@@ -15,6 +15,7 @@ import database
 from database import get_conn, ensure_user
 import engine
 from engine import compute_stock_score, sector_movers, traffic_light, _iso
+import catalysts
 
 
 @asynccontextmanager
@@ -260,6 +261,14 @@ async def dashboard():
 
     scores = await sector_movers(watch_symbols)
 
+    # attach catalyst + insider context to each scored stock (causal layer)
+    for sc in scores:
+        evs = catalysts.get_events(sc["symbol"])
+        sc["catalyst_today"] = catalysts.has_catalyst_today(sc["symbol"])
+        sc["events"] = evs
+        insider = [e for e in evs if e["type"] == "insider"]
+        sc["insider"] = insider[0] if insider else None
+
     snapshot = {
         "watchlist": scores,
         "alerts": alerts,
@@ -274,6 +283,20 @@ async def stock_detail(symbol: str):
     sc = await compute_stock_score(symbol.upper())
     if sc is None:
         raise HTTPException(404, "Unknown symbol")
+    sc["events"] = catalysts.get_events(sc["symbol"])
+    sc["catalyst_today"] = catalysts.has_catalyst_today(sc["symbol"])
+    evs = sc["events"]
+    insider = [e for e in evs if e["type"] == "insider"]
+    sc["insider"] = insider[0] if insider else None
+    # relative strength vs 20d / 52w
+    hist = await engine.fetch_history(sc["symbol"], 260)
+    if len(hist) >= 20:
+        prices = np.array([r["price"] for r in hist], dtype=float)
+        sc["rs_20d"] = round((prices[-1] / prices[-20] - 1) * 100, 2) if prices[-20] else 0
+        sc["high_52w"] = float(prices.max())
+        sc["low_52w"] = float(prices.min())
+        rng_52 = max(prices.max() - prices.min(), 1e-6)
+        sc["pos_in_52w"] = round((prices[-1] - prices.min()) / rng_52 * 100, 1)
     return sc
 
 

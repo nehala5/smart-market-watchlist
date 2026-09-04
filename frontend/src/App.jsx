@@ -19,8 +19,16 @@ export default function App() {
   const [filters, setFilters] = useState({})
   const [connected, setConnected] = useState(false)
   const [error, setError] = useState(null)
+  const [theme, setTheme] = useState(() => localStorage.getItem('sw-theme') || 'dark')
   const prevRef = useRef(null)
   const esRef = useRef(null)
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', theme === 'light')
+    localStorage.setItem('sw-theme', theme)
+  }, [theme])
+
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))
 
   // Initial load: show cached instantly, then fetch live
   useEffect(() => {
@@ -109,6 +117,8 @@ export default function App() {
         view={view}
         setView={setView}
         onScan={onScan}
+        theme={theme}
+        onToggleTheme={toggleTheme}
         unread={data?.alerts?.filter((a) => a.status === 'fired' || a.status === 'seen').length || 0}
       />
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-5">

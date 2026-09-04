@@ -6,14 +6,14 @@ const VIEWS = [
   { key: 'backtest', label: 'Backtest' },
 ]
 
-export default function Header({ connected, view, setView, onScan, unread }) {
+export default function Header({ connected, view, setView, onScan, unread, theme, onToggleTheme }) {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-bg/90 backdrop-blur">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 font-bold text-white">
             <span className="text-xl">📡</span>
-            <span className="tracking-tight">Signal<span className="text-accent">Watch</span></span>
+            <span className="tracking-tight text-white">Signal<span className="text-accent">Watch</span></span>
           </div>
           <span className="hidden sm:inline text-xs text-slate-500">
             Smart market watchlist
@@ -38,6 +38,13 @@ export default function Header({ connected, view, setView, onScan, unread }) {
             title="Re-scan for anomalies"
           >
             ⟳ Scan
+          </button>
+          <button
+            onClick={onToggleTheme}
+            className="ml-2 px-2.5 py-1.5 rounded-lg text-sm hover:bg-panel2 transition-colors"
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
           </button>
           <div className="ml-3 flex items-center gap-1.5 text-xs text-slate-500">
             <span

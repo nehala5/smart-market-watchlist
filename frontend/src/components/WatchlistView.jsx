@@ -57,21 +57,36 @@ function StockRow({ stock, delta, onRemove, onUpdatePrefs }) {
   const [expanded, setExpanded] = React.useState(false)
   const [menuOpen, setMenuOpen] = React.useState(false)
   const light = trafficLight(stock.composite)
-  const meta = STATUS_META[light]
   const fs = freshnessLabel(stock.freshness_sec)
   const up = (stock.change_pct || 0) >= 0
 
   return (
     <div className={`card p-3.5 fade-in-up border-l-4 ${light === 'unusual' ? 'border-l-red-500' : light === 'watch' ? 'border-l-amber-500' : 'border-l-emerald-600'}`}>
       <div className="flex items-center gap-3" onClick={() => setExpanded((e) => !e)}>
-        {/* Traffic light */}
-        <span className={`w-3 h-3 rounded-full ${light === 'unusual' ? 'pulse-ring' : ''}`} style={{ background: meta.color }} />
+        {/* Direction dot: green=up, red=down (instant read) */}
+        <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: up ? '#22c55e' : '#ef4444' }} />
 
         {/* Name */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <span className="font-bold text-white">{stock.symbol}</span>
             <span className="text-xs text-slate-500">{stock.sector_short}</span>
+            {/* Anomaly badge (left border + this label carry the anomaly signal) */}
+            <span className={`text-[10px] px-1.5 py-0.5 rounded ${light === 'unusual' ? 'bg-red-500/20 text-red-400' : light === 'watch' ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-400'}`}>
+              {light === 'unusual' ? 'Unusual' : light === 'watch' ? 'Watch' : 'Normal'}
+            </span>
+            {stock.catalyst_today && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300" title={
+                (stock.events || []).map((e) => `${e.title} · ${e.date}`).join('\n')
+              }>
+                📅 Catalyst
+              </span>
+            )}
+            {stock.insider && (
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300" title={stock.insider.detail}>
+                🔍 Insider
+              </span>
+            )}
             {delta?.lightChanged && (
               <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">↕ changed</span>
             )}
@@ -204,6 +219,25 @@ function StockDetail({ stock }) {
               {stock.relative_change >= 0 ? '+' : ''}{stock.relative_change}%
             </span>
           </div>
+          {stock.rs_20d != null && (
+            <div className="text-sm text-slate-400">
+              20-day RS{' '}
+              <span className={`font-mono ${stock.rs_20d >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                {stock.rs_20d >= 0 ? '+' : ''}{stock.rs_20d}%
+              </span>
+            </div>
+          )}
+          {stock.pos_in_52w != null && (
+            <div className="text-sm text-slate-400">
+              52w range position{' '}
+              <span className="font-mono text-white">{stock.pos_in_52w}%</span>
+            </div>
+          )}
+          {stock.insider && (
+            <div className="text-[11px] text-sky-300">
+              🔍 {stock.insider.detail}
+            </div>
+          )}
         </div>
       </div>
     </div>

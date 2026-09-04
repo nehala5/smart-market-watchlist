@@ -10,6 +10,28 @@
     @apply bg-bg text-slate-200 antialiased;
     font-family: 'Inter', system-ui, sans-serif;
   }
+
+  /* LIGHT MODE: override the dark palette via CSS variables when .light is set */
+  .light body, body.light {
+    @apply bg-slate-100 text-slate-800;
+  }
+
+  body.light .card {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+  }
+  body.light .bg-panel { background: #ffffff; }
+  body.light .bg-panel2, body.light .hover\:bg-panel2:hover { background: #f1f5f9; }
+  body.light .bg-bg, body.light .bg-bg\/90 { background: #f1f5f9; }
+  body.light .border-border { border-color: #e2e8f0; }
+  body.light .text-white { color: #0f172a; }
+  body.light .text-slate-200 { color: #334155; }
+  body.light .text-slate-300 { color: #475569; }
+  body.light .text-slate-400 { color: #64748b; }
+  body.light .text-slate-500 { color: #94a3b8; }
+  body.light .text-slate-600 { color: #94a3b8; }
+  body.light .bg-bg { background: #f1f5f9; }
 }
 
 @layer components {

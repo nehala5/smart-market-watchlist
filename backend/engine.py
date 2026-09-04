@@ -200,6 +200,12 @@ async def compute_stock_score(symbol, now=None):
         "decay": round(decay_multiplier(_iso(ts[-1]), now), 3),
         "freshness_sec": round((now - _iso(ts[-1])).total_seconds()),
         "series_prices": [float(p) for p in prices[-24:]],
+        # Relative-strength context (trend regime, not just today's move)
+        "rs_20d": round(float((prices[-1] / prices[-20] - 1) * 100), 2)
+                  if len(prices) >= 20 and prices[-20] > 0 else round(float((prices[-1] / prices[0] - 1) * 100), 2),
+        "high_52w": float(prices.max()),
+        "low_52w": float(prices.min()),
+        "pos_in_52w": round(float((prices[-1] - prices.min()) / max(prices.max() - prices.min(), 1e-6) * 100), 1),
     }
 
 
