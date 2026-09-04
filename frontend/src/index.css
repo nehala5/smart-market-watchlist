@@ -10,9 +10,8 @@
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-  /* Light palette injected via <html class="light"> */
   html.light body {
-    background: #f1f5f9;
+    background: #f8fafc;
     color: #334155;
   }
 }
@@ -26,16 +25,17 @@
   }
 }
 
-/* ---- LIGHT MODE OVERRIDES ------------------------------------------------
-   Unlayered CSS wins over Tailwind's layered utilities, so these reliably
-   remap the dark-only color classes when <html class="light"> is active.
-   Dark mode (the default) is left completely untouched. */
+/* ---- LIGHT MODE: polished, unlayered overrides --------------------------
+   These win over Tailwind's layered utilities and remap the dark-only
+   palette into a clean light theme. Dark mode is left untouched. */
 html.light body {
-  background: #f1f5f9;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  background-attachment: fixed;
   color: #334155;
 }
 
-html.light .bg-bg, html.light .bg-bg\/90 { background: #f1f5f9; }
+/* Surfaces */
+html.light .bg-bg, html.light .bg-bg\/90 { background: #f8fafc; }
 html.light .bg-panel,
 html.light .bg-panel\/40,
 html.light .bg-panel\/60,
@@ -45,11 +45,20 @@ html.light .bg-panel2\/60,
 html.light .bg-panel2\/80 { background: #f1f5f9; }
 html.light .hover\:bg-panel2:hover { background: #f1f5f9; }
 
+/* Cards get a soft shadow for depth */
+html.light .card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
 html.light .border-border,
 html.light .border-border\/40,
 html.light .border-border\/60,
-html.light .border-border\/70 { border-color: #e2e8f0; }
+html.light .border-border\/70,
+html.light .border-t { border-color: #e2e8f0; }
 
+/* Primary / secondary text */
 html.light .text-white,
 html.light .hover\:text-white:hover { color: #0f172a; }
 html.light .text-slate-200,
@@ -60,6 +69,35 @@ html.light .text-slate-500 { color: #64748b; }
 html.light .text-slate-600 { color: #94a3b8; }
 html.light .placeholder-slate-500::placeholder { color: #94a3b8; }
 html.light .placeholder-slate-400::placeholder { color: #94a3b8; }
+
+/* Semantic / badge accents → darker, readable shades on light bg */
+html.light .text-red-400 { color: #dc2626; }
+html.light .text-red-500 { color: #dc2626; }
+html.light .text-amber-300 { color: #b45309; }
+html.light .text-amber-400 { color: #d97706; }
+html.light .text-emerald-400 { color: #059669; }
+html.light .text-emerald-500 { color: #059669; }
+html.light .text-purple-300, html.light .text-purple-400 { color: #7c3aed; }
+html.light .text-sky-300, html.light .text-sky-400 { color: #0284c7; }
+html.light .text-teal-400 { color: #0d9488; }
+
+/* Colored badges: stronger tint + darker text for contrast on light bg */
+html.light .bg-red-500\/20 { background: #fee2e2; }
+html.light .bg-amber-500\/20 { background: #fef3c7; }
+html.light .bg-emerald-500\/20 { background: #d1fae5; }
+html.light .bg-purple-500\/20 { background: #ede9fe; }
+html.light .bg-sky-500\/20 { background: #e0f2fe; }
+
+/* Accent surfaces (selected nav, acknowledge btn) */
+html.light .bg-accent\/20 { background: #dbeafe; }
+html.light .bg-accent\/30 { background: #bfdbfe; }
+html.light .text-accent { color: #2563eb; }
+
+/* Header */
+html.light header {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px);
+}
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
