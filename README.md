@@ -48,6 +48,18 @@ Then the design goes further:
 - **Correlation heatmap** — see which holdings move together vs. which are isolated.
 
 ---
+### Screenshots 
+<img width="1715" height="867" alt="image" src="https://github.com/user-attachments/assets/4ffbf026-32ae-44e8-981c-daf5f16595ca" />
+<img width="1701" height="825" alt="image" src="https://github.com/user-attachments/assets/65c8a48f-407d-461d-a36d-3ac918ccf23e" />
+<img width="1696" height="849" alt="image" src="https://github.com/user-attachments/assets/a2bb7161-1b2f-4f04-9b01-194f47026413" />
+<img width="1681" height="847" alt="image" src="https://github.com/user-attachments/assets/556cfc18-f608-4ac3-b9fe-8f5ea61968bf" />
+<img width="1162" height="650" alt="image" src="https://github.com/user-attachments/assets/7165951a-1585-4f75-83b3-e2491805c318" />
+
+<img width="1798" height="844" alt="image" src="https://github.com/user-attachments/assets/323d74ad-aa03-4a87-a081-c4692025fe3c" />
+<img width="526" height="505" alt="image" src="https://github.com/user-attachments/assets/93ba86ab-8e4f-49b3-bdfa-d99c7507cba0" />
+<img width="512" height="584" alt="image" src="https://github.com/user-attachments/assets/8fc89077-42c6-4b37-938c-cd53374ac3bd" />
+
+
 
 ## 🧱 Architecture
 
