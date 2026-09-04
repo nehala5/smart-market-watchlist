@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: signalwatch
+    runtime: python
+    buildCommand: "pip install -r backend/requirements.txt && cd frontend && npm install && npm run build"
+    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    plan: free
+    healthCheckPath: /api/health
+    autoDeploy: true
+    healthCheckTarget: 200
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"

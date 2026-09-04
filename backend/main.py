@@ -47,6 +47,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ---- Serve the built React dashboard (frontend/dist) if present ----------
+import pathlib  # noqa: E402
+from fastapi.staticfiles import StaticFiles  # noqa: E402
+from fastapi.responses import FileResponse, JSONResponse  # noqa: E402
+from starlette.exceptions import HTTPException as StarletteHTTPException  # noqa: E402
+
+_FRONTEND = pathlib.Path(__file__).resolve().parent.parent / "frontend" / "dist"
+if _FRONTEND.exists() and (_FRONTEND / "index.html").exists():
+    app.mount(
+        "/assets",
+        StaticFiles(directory=str(_FRONTEND / "assets")),
+        name="assets",
+    )
+
+    @app.get("/", include_in_schema=False)
+    async def _index():
+        return FileResponse(_FRONTEND / "index.html")
+
+    @app.exception_handler(StarletteHTTPException)
+    async def _spa_fallback(request, exc):
+        p = request.url.path
+        if exc.status_code == 404 and not p.startswith("/api"):
+            if (_FRONTEND / "index.html").exists():
+                return FileResponse(_FRONTEND / "index.html")
+        return JSONResponse({"detail": "Not Found"}, status_code=404)
+
 
 # ----------------------------------------------------------------- Models ----
 class WatchlistCreate(BaseModel):
