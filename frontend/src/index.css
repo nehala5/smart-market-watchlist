@@ -3,35 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-  html, body, #root {
-    height: 100%;
-  }
+  html, body, #root { height: 100%; }
   body {
-    @apply bg-bg text-slate-200 antialiased;
+    background: #0b0f17;
+    color: #cbd5e1;
     font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-
-  /* LIGHT MODE: override the dark palette via CSS variables when .light is set */
-  .light body, body.light {
-    @apply bg-slate-100 text-slate-800;
+  /* Light palette injected via <html class="light"> */
+  html.light body {
+    background: #f1f5f9;
+    color: #334155;
   }
-
-  body.light .card {
-    background: #ffffff;
-    border-color: #e2e8f0;
-    color: #1e293b;
-  }
-  body.light .bg-panel { background: #ffffff; }
-  body.light .bg-panel2, body.light .hover\:bg-panel2:hover { background: #f1f5f9; }
-  body.light .bg-bg, body.light .bg-bg\/90 { background: #f1f5f9; }
-  body.light .border-border { border-color: #e2e8f0; }
-  body.light .text-white { color: #0f172a; }
-  body.light .text-slate-200 { color: #334155; }
-  body.light .text-slate-300 { color: #475569; }
-  body.light .text-slate-400 { color: #64748b; }
-  body.light .text-slate-500 { color: #94a3b8; }
-  body.light .text-slate-600 { color: #94a3b8; }
-  body.light .bg-bg { background: #f1f5f9; }
 }
 
 @layer components {
@@ -43,11 +26,47 @@
   }
 }
 
+/* ---- LIGHT MODE OVERRIDES ------------------------------------------------
+   Unlayered CSS wins over Tailwind's layered utilities, so these reliably
+   remap the dark-only color classes when <html class="light"> is active.
+   Dark mode (the default) is left completely untouched. */
+html.light body {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+html.light .bg-bg, html.light .bg-bg\/90 { background: #f1f5f9; }
+html.light .bg-panel,
+html.light .bg-panel\/40,
+html.light .bg-panel\/60,
+html.light .bg-panel\/90 { background: #ffffff; }
+html.light .bg-panel2,
+html.light .bg-panel2\/60,
+html.light .bg-panel2\/80 { background: #f1f5f9; }
+html.light .hover\:bg-panel2:hover { background: #f1f5f9; }
+
+html.light .border-border,
+html.light .border-border\/40,
+html.light .border-border\/60,
+html.light .border-border\/70 { border-color: #e2e8f0; }
+
+html.light .text-white,
+html.light .hover\:text-white:hover { color: #0f172a; }
+html.light .text-slate-200,
+html.light .hover\:text-slate-200:hover { color: #334155; }
+html.light .text-slate-300 { color: #475569; }
+html.light .text-slate-400 { color: #64748b; }
+html.light .text-slate-500 { color: #64748b; }
+html.light .text-slate-600 { color: #94a3b8; }
+html.light .placeholder-slate-500::placeholder { color: #94a3b8; }
+html.light .placeholder-slate-400::placeholder { color: #94a3b8; }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #263041; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #334155; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+html.light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(6px); }
