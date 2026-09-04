@@ -1,4 +1,4 @@
-# 📡 SignalWatch — Smart Market Watchlist
+# 📡 SignalWatch - Smart Market Watchlist
 
 A **smart market watchlist** that doesn't just track prices — it tells you what has
 *meaningfully changed* since you last looked, and what deserves your attention now.
